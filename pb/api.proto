@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package pb;
+
+// Mesg service to send ping pong messages
+service PingPong {
+    // Email service sends email
+    rpc Mesg(SendRequest) returns (SendResponse) {}
+}
+
+message SendRequest {
+    string mesg = 1;
+}
+
+message SendResponse {
+    string mesg = 1;
+}
