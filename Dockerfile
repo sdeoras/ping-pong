@@ -1,6 +1,8 @@
 # Use base golang image from Docker Hub
 FROM golang:1.12
 
+WORKDIR /ping-pong
+
 # Install dependencies in go.mod and go.sum
 COPY go.mod go.sum ./
 RUN go mod download
