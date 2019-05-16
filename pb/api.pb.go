@@ -3,13 +3,15 @@
 
 package pb
 
-import proto "github.com/golang/protobuf/proto"
-import fmt "fmt"
-import math "math"
-
 import (
-	context "golang.org/x/net/context"
+	context "context"
+	fmt "fmt"
+	math "math"
+
+	proto "github.com/golang/protobuf/proto"
 	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -21,10 +23,10 @@ var _ = math.Inf
 // is compatible with the proto package it is being compiled against.
 // A compilation error at this line likely means your copy of the
 // proto package needs to be updated.
-const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
+const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
 type SendRequest struct {
-	Mesg                 string   `protobuf:"bytes,1,opt,name=mesg,proto3" json:"mesg,omitempty"`
+	Packet               *Packet  `protobuf:"bytes,1,opt,name=packet,proto3" json:"packet,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -34,16 +36,17 @@ func (m *SendRequest) Reset()         { *m = SendRequest{} }
 func (m *SendRequest) String() string { return proto.CompactTextString(m) }
 func (*SendRequest) ProtoMessage()    {}
 func (*SendRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_api_5331d37cab43073b, []int{0}
+	return fileDescriptor_00212fb1f9d3bf1c, []int{0}
 }
+
 func (m *SendRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_SendRequest.Unmarshal(m, b)
 }
 func (m *SendRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	return xxx_messageInfo_SendRequest.Marshal(b, m, deterministic)
 }
-func (dst *SendRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_SendRequest.Merge(dst, src)
+func (m *SendRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_SendRequest.Merge(m, src)
 }
 func (m *SendRequest) XXX_Size() int {
 	return xxx_messageInfo_SendRequest.Size(m)
@@ -54,15 +57,15 @@ func (m *SendRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_SendRequest proto.InternalMessageInfo
 
-func (m *SendRequest) GetMesg() string {
+func (m *SendRequest) GetPacket() *Packet {
 	if m != nil {
-		return m.Mesg
+		return m.Packet
 	}
-	return ""
+	return nil
 }
 
 type SendResponse struct {
-	Mesg                 string   `protobuf:"bytes,1,opt,name=mesg,proto3" json:"mesg,omitempty"`
+	Packet               *Packet  `protobuf:"bytes,1,opt,name=packet,proto3" json:"packet,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -72,16 +75,17 @@ func (m *SendResponse) Reset()         { *m = SendResponse{} }
 func (m *SendResponse) String() string { return proto.CompactTextString(m) }
 func (*SendResponse) ProtoMessage()    {}
 func (*SendResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_api_5331d37cab43073b, []int{1}
+	return fileDescriptor_00212fb1f9d3bf1c, []int{1}
 }
+
 func (m *SendResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_SendResponse.Unmarshal(m, b)
 }
 func (m *SendResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	return xxx_messageInfo_SendResponse.Marshal(b, m, deterministic)
 }
-func (dst *SendResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_SendResponse.Merge(dst, src)
+func (m *SendResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_SendResponse.Merge(m, src)
 }
 func (m *SendResponse) XXX_Size() int {
 	return xxx_messageInfo_SendResponse.Size(m)
@@ -92,16 +96,81 @@ func (m *SendResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_SendResponse proto.InternalMessageInfo
 
-func (m *SendResponse) GetMesg() string {
+func (m *SendResponse) GetPacket() *Packet {
+	if m != nil {
+		return m.Packet
+	}
+	return nil
+}
+
+type Packet struct {
+	Mesg                 string   `protobuf:"bytes,1,opt,name=mesg,proto3" json:"mesg,omitempty"`
+	Counter              int32    `protobuf:"varint,2,opt,name=counter,proto3" json:"counter,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *Packet) Reset()         { *m = Packet{} }
+func (m *Packet) String() string { return proto.CompactTextString(m) }
+func (*Packet) ProtoMessage()    {}
+func (*Packet) Descriptor() ([]byte, []int) {
+	return fileDescriptor_00212fb1f9d3bf1c, []int{2}
+}
+
+func (m *Packet) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_Packet.Unmarshal(m, b)
+}
+func (m *Packet) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_Packet.Marshal(b, m, deterministic)
+}
+func (m *Packet) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Packet.Merge(m, src)
+}
+func (m *Packet) XXX_Size() int {
+	return xxx_messageInfo_Packet.Size(m)
+}
+func (m *Packet) XXX_DiscardUnknown() {
+	xxx_messageInfo_Packet.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Packet proto.InternalMessageInfo
+
+func (m *Packet) GetMesg() string {
 	if m != nil {
 		return m.Mesg
 	}
 	return ""
 }
 
+func (m *Packet) GetCounter() int32 {
+	if m != nil {
+		return m.Counter
+	}
+	return 0
+}
+
 func init() {
 	proto.RegisterType((*SendRequest)(nil), "pb.SendRequest")
 	proto.RegisterType((*SendResponse)(nil), "pb.SendResponse")
+	proto.RegisterType((*Packet)(nil), "pb.Packet")
+}
+
+func init() { proto.RegisterFile("api.proto", fileDescriptor_00212fb1f9d3bf1c) }
+
+var fileDescriptor_00212fb1f9d3bf1c = []byte{
+	// 172 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xe2, 0x4c, 0x2c, 0xc8, 0xd4,
+	0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x62, 0x2a, 0x48, 0x52, 0x32, 0xe4, 0xe2, 0x0e, 0x4e, 0xcd,
+	0x4b, 0x09, 0x4a, 0x2d, 0x2c, 0x4d, 0x2d, 0x2e, 0x11, 0x52, 0xe2, 0x62, 0x2b, 0x48, 0x4c, 0xce,
+	0x4e, 0x2d, 0x91, 0x60, 0x54, 0x60, 0xd4, 0xe0, 0x36, 0xe2, 0xd2, 0x2b, 0x48, 0xd2, 0x0b, 0x00,
+	0x8b, 0x04, 0x41, 0x65, 0x94, 0x8c, 0xb8, 0x78, 0x20, 0x5a, 0x8a, 0x0b, 0xf2, 0xf3, 0x8a, 0x53,
+	0x89, 0xd2, 0x63, 0xc6, 0xc5, 0x06, 0x11, 0x11, 0x12, 0xe2, 0x62, 0xc9, 0x4d, 0x2d, 0x4e, 0x07,
+	0xab, 0xe5, 0x0c, 0x02, 0xb3, 0x85, 0x24, 0xb8, 0xd8, 0x93, 0xf3, 0x4b, 0xf3, 0x4a, 0x52, 0x8b,
+	0x24, 0x98, 0x14, 0x18, 0x35, 0x58, 0x83, 0x60, 0x5c, 0x23, 0x73, 0x2e, 0x8e, 0x80, 0xcc, 0xbc,
+	0xf4, 0x80, 0xfc, 0xbc, 0x74, 0x21, 0x6d, 0x2e, 0x16, 0x5f, 0x90, 0x6a, 0x7e, 0x90, 0xf9, 0x48,
+	0x8e, 0x96, 0x12, 0x40, 0x08, 0x40, 0x9c, 0xa4, 0xc4, 0x90, 0xc4, 0x06, 0xf6, 0xa2, 0x31, 0x20,
+	0x00, 0x00, 0xff, 0xff, 0x3b, 0xf9, 0xd2, 0x0c, 0xef, 0x00, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -143,6 +212,14 @@ type PingPongServer interface {
 	Mesg(context.Context, *SendRequest) (*SendResponse, error)
 }
 
+// UnimplementedPingPongServer can be embedded to have forward compatible implementations.
+type UnimplementedPingPongServer struct {
+}
+
+func (*UnimplementedPingPongServer) Mesg(ctx context.Context, req *SendRequest) (*SendResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Mesg not implemented")
+}
+
 func RegisterPingPongServer(s *grpc.Server, srv PingPongServer) {
 	s.RegisterService(&_PingPong_serviceDesc, srv)
 }
@@ -176,18 +253,4 @@ var _PingPong_serviceDesc = grpc.ServiceDesc{
 	},
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "api.proto",
-}
-
-func init() { proto.RegisterFile("api.proto", fileDescriptor_api_5331d37cab43073b) }
-
-var fileDescriptor_api_5331d37cab43073b = []byte{
-	// 127 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xe2, 0x4c, 0x2c, 0xc8, 0xd4,
-	0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x62, 0x2a, 0x48, 0x52, 0x52, 0xe4, 0xe2, 0x0e, 0x4e, 0xcd,
-	0x4b, 0x09, 0x4a, 0x2d, 0x2c, 0x4d, 0x2d, 0x2e, 0x11, 0x12, 0xe2, 0x62, 0xc9, 0x4d, 0x2d, 0x4e,
-	0x97, 0x60, 0x54, 0x60, 0xd4, 0xe0, 0x0c, 0x02, 0xb3, 0x95, 0x94, 0xb8, 0x78, 0x20, 0x4a, 0x8a,
-	0x0b, 0xf2, 0xf3, 0x8a, 0x53, 0xb1, 0xa9, 0x31, 0x32, 0xe7, 0xe2, 0x08, 0xc8, 0xcc, 0x4b, 0x0f,
-	0xc8, 0xcf, 0x4b, 0x17, 0xd2, 0xe6, 0x62, 0xf1, 0x4d, 0x2d, 0x4e, 0x17, 0xe2, 0xd7, 0x2b, 0x48,
-	0xd2, 0x43, 0x32, 0x5c, 0x4a, 0x00, 0x21, 0x00, 0x31, 0x4a, 0x89, 0x21, 0x89, 0x0d, 0xec, 0x14,
-	0x63, 0x40, 0x00, 0x00, 0x00, 0xff, 0xff, 0x77, 0x3c, 0x04, 0x4f, 0x97, 0x00, 0x00, 0x00,
 }

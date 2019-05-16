@@ -15,16 +15,25 @@
 package cmd
 
 import (
-	"github.com/spf13/cobra"
+	"net"
+	"strings"
+
+	"github.com/sdeoras/ping-pong/config"
+	"github.com/sdeoras/ping-pong/pb"
+	"github.com/sdeoras/ping-pong/server"
 	"github.com/spf13/viper"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
+
+	"github.com/spf13/cobra"
 )
 
 // runCmd represents the run command
 var runCmd = &cobra.Command{
 	Use:   "run",
-	Short: "run client",
-	Long: "",
-	RunE: run,
+	Short: "run server",
+	Long:  "",
+	RunE:  run,
 }
 
 func run(cmd *cobra.Command, args []string) error {
@@ -34,6 +43,20 @@ func run(cmd *cobra.Command, args []string) error {
 	host := viper.GetString("/run/host")
 	port := viper.GetString("/run/port")
 
+	lis, err := net.Listen("tcp", strings.Join([]string{host, port}, ":"))
+	if err != nil {
+		return err
+	}
+
+	s := grpc.NewServer()
+	pingPongServer := server.NewPingPongServer()
+
+	pb.RegisterPingPongServer(s, pingPongServer)
+
+	reflection.Register(s)
+	if err := s.Serve(lis); err != nil {
+		return err
+	}
 
 	return nil
 }
@@ -50,6 +73,6 @@ func init() {
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
 	// runCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-	runCmd.Flags().String("host", "localhost", "hostname")
-	runCmd.Flags().String("port", "5001", "port number")
+	runCmd.Flags().String("host", config.DefaultHost, "hostname")
+	runCmd.Flags().String("port", config.DefaultPort, "port number")
 }

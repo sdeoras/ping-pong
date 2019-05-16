@@ -15,27 +15,64 @@
 package cmd
 
 import (
+	"context"
 	"fmt"
-	"github.com/spf13/viper"
+	"strings"
+	"time"
 
+	"github.com/sdeoras/ping-pong/config"
+	"github.com/sdeoras/ping-pong/pb"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
+	"google.golang.org/grpc"
 )
 
 // runCmd represents the run command
 var runCmd = &cobra.Command{
 	Use:   "run",
-	Short: "run server",
-	Long: "",
-	RunE: run,
+	Short: "run client",
+	Long:  "",
+	RunE:  run,
 }
 
 func run(cmd *cobra.Command, args []string) error {
 	_ = viper.BindPFlag("/run/host", cmd.Flags().Lookup("host"))
 	_ = viper.BindPFlag("/run/port", cmd.Flags().Lookup("port"))
+	_ = viper.BindPFlag("/run/iterations", cmd.Flags().Lookup("iterations"))
 
 	host := viper.GetString("/run/host")
 	port := viper.GetString("/run/port")
+	n := viper.GetInt("/run/iterations")
 
+	conn, err := grpc.Dial(strings.Join([]string{host, port}, ":"), grpc.WithInsecure())
+	if err != nil {
+		return err
+	}
+	defer conn.Close()
+
+	c := pb.NewPingPongClient(conn)
+
+	mesg := "ping"
+
+	for i := 0; i < n; i++ {
+		in := &pb.SendRequest{
+			Packet: &pb.Packet{
+				Mesg:    mesg,
+				Counter: int32(i),
+			},
+		}
+
+		out, err := c.Mesg(context.Background(), in)
+		if err != nil {
+			return err
+		}
+
+		mesg = out.Packet.Mesg
+
+		fmt.Printf("client: %4d, %s\n", out.Packet.Counter, out.Packet.Mesg)
+
+		time.Sleep(time.Millisecond * 200)
+	}
 
 	return nil
 }
@@ -52,6 +89,7 @@ func init() {
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
 	// runCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-	runCmd.Flags().String("host", "localhost", "hostname")
-	runCmd.Flags().String("port", "5001", "port number")
+	runCmd.Flags().String("host", config.DefaultHost, "hostname")
+	runCmd.Flags().String("port", config.DefaultPort, "port number")
+	runCmd.Flags().Int("iterations", 100, "number of ping pong iterations")
 }

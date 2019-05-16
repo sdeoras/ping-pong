@@ -1,0 +1,17 @@
+apiVersion: skaffold/v1beta9
+kind: Config
+build:
+  artifacts:
+    - image: ping-pong
+deploy:
+  kubectl:
+    manifests:
+      - kubernetes-manifests/client.yaml
+      - kubernetes-manifests/server.yaml
+profiles:
+  - build: {}
+    deploy:
+      kubectl:
+        manifests:
+          - kubernetes-manifests/*
+    name: appserv

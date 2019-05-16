@@ -9,9 +9,14 @@ service PingPong {
 }
 
 message SendRequest {
-    string mesg = 1;
+    Packet packet=1;
 }
 
 message SendResponse {
+    Packet packet=1;
+}
+
+message Packet {
     string mesg = 1;
+    int32 counter = 2;
 }

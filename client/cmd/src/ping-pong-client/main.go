@@ -14,7 +14,7 @@
 
 package main
 
-import "github.com/sdeoras/ping-pong/server/cmd/src/pingpong-server/cmd"
+import "github.com/sdeoras/ping-pong/client/cmd/src/ping-pong-client/cmd"
 
 func main() {
 	cmd.Execute()
