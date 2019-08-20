@@ -11,7 +11,7 @@ spec:
     image: {{.Image}}
     imagePullPolicy: IfNotPresent
     command:
-      - /usr/local/bin/ping-pong-client
+      - /ping-pong-client
     args:
       - run
       - --host

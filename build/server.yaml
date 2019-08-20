@@ -15,7 +15,7 @@ spec:
       - name: ping-pong-server
         image: {{.Image}}
         command:
-          - /usr/local/bin/ping-pong-server
+          - /ping-pong-server
         args:
           - run
           - --host
