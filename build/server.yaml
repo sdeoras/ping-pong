@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: ping-pong-server
-        image: docker.io/sdeoras/ping-pong-server:08ee5d84-dirty
+        image: {{.Image}}
         command:
           - /usr/local/bin/ping-pong-server
         args:

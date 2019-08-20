@@ -8,7 +8,7 @@ spec:
   restartPolicy: OnFailure
   containers:
   - name: ping-pong-client
-    image: docker.io/sdeoras/ping-pong-client:08ee5d84-dirty
+    image: {{.Image}}
     imagePullPolicy: IfNotPresent
     command:
       - /usr/local/bin/ping-pong-client
