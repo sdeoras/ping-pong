@@ -16,7 +16,7 @@ spec:
       runtimeClassName: runc
       containers:
       - name: ping-pong-server
-        image: {{.Image}}
+        image: docker.io/sdeoras/ping-pong-server:20e72c1f-clean
         command:
           - /ping-pong-server
         args:

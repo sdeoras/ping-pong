@@ -37,7 +37,7 @@ buildah run ${CTR} -- ln -s /lib/libc.musl-x86_64.so.1 /lib64/ld-linux-x86-64.so
 
 # update yaml file
 mkdir -p ../kubernetes-manifests
-sed -e "s/{{.Image}}/docker.io\/sdeoras\/ping-pong-${COMPONENT}:${TAG}-${STATE}/g" ${COMPONENT}.yaml > ../kubernetes-manifests/${COMPONENT}.yaml
+sed -e "s/image:.*/image: docker.io\/sdeoras\/ping-pong-${COMPONENT}:${TAG}-${STATE}/g" ${COMPONENT}.yaml > ../kubernetes-manifests/${COMPONENT}.yaml
 
 # commit working container to a container image and remove working container
 buildah commit --rm ${CTR} ${IMG}

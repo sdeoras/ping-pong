@@ -40,7 +40,7 @@ buildah commit --rm ${CTR} ${IMG}
 
 # update yaml file
 mkdir -p ../kubernetes-manifests
-sed -e "s/{{.Image}}/docker.io\/sdeoras\/ping-pong-${COMPONENT}:${TAG}-${STATE}/g" ${COMPONENT}.yaml > ../kubernetes-manifests/${COMPONENT}.yaml
+sed -e "s/image:.*/image: docker.io\/sdeoras\/ping-pong-${COMPONENT}:${TAG}-${STATE}/g" ${COMPONENT}.yaml > ../kubernetes-manifests/${COMPONENT}.yaml
 
 echo "====================================="
 echo "built container image ${IMG}"

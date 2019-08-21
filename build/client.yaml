@@ -15,10 +15,11 @@ spec:
                   operator: In
                   values:
                     - ping-pong
+            topologyKey: kubernetes.io/hostname
   restartPolicy: OnFailure
   containers:
   - name: ping-pong-client
-    image: {{.Image}}
+    image: docker.io/sdeoras/ping-pong-client:20e72c1f-clean
     imagePullPolicy: IfNotPresent
     command:
       - /ping-pong-client
