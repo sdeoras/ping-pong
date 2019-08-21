@@ -1,4 +1,5 @@
 .idea
 .vscode
 a.out
-/kubernetes-manifests
+/kubernetes-manifests/client.yaml
+/kubernetes-manifests/server.yaml

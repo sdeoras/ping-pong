@@ -8,9 +8,12 @@ spec:
       app: ping-pong-server
   template:
     metadata:
+      name: ping-pong-server
       labels:
         app: ping-pong-server
+        name: ping-pong
     spec:
+      runtimeClassName: runc
       containers:
       - name: ping-pong-server
         image: {{.Image}}

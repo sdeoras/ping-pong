@@ -1,0 +1,17 @@
+apiVersion: node.k8s.io/v1beta1
+kind: RuntimeClass
+metadata:
+  name: kata-runtime
+handler: kata-runtime
+---
+apiVersion: node.k8s.io/v1beta1
+kind: RuntimeClass
+metadata:
+  name: runsc
+handler: runsc
+---
+apiVersion: node.k8s.io/v1beta1
+kind: RuntimeClass
+metadata:
+  name: runc
+handler: runc

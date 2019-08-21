@@ -3,8 +3,18 @@ kind: Pod
 metadata:
   name: ping-pong-client
   labels:
-    name: ping-pong-client
+    name: ping-pong
 spec:
+  runtimeClassName: runc
+  affinity:
+    podAntiAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+                - key: name
+                  operator: In
+                  values:
+                    - ping-pong
   restartPolicy: OnFailure
   containers:
   - name: ping-pong-client
