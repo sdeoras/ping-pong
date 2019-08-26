@@ -39,8 +39,9 @@ buildah run ${CTR} -- ln -s /lib/libc.musl-x86_64.so.1 /lib64/ld-linux-x86-64.so
 buildah commit --rm ${CTR} ${IMG}
 
 # update yaml file
-mkdir -p ../kubernetes-manifests
-sed -e "s/image:.*/image: docker.io\/sdeoras\/ping-pong-${COMPONENT}:${TAG}-${STATE}/g" ${COMPONENT}.yaml > ../kubernetes-manifests/${COMPONENT}.yaml
+for d in `ls -1 ../kubernetes-manifests/${COMPONENT}*.yaml`; do
+    sed -i -e "s/image:.*/image: docker.io\/sdeoras\/ping-pong-${COMPONENT}:${TAG}-${STATE}/g" ${d}
+done
 
 echo "====================================="
 echo "built container image ${IMG}"

@@ -13,10 +13,10 @@ spec:
         app: ping-pong-server
         name: ping-pong
     spec:
-      runtimeClassName: runc
+      runtimeClassName: runsc
       containers:
       - name: ping-pong-server
-        image: docker.io/sdeoras/ping-pong-server:20e72c1f-clean
+        image: docker.io/sdeoras/ping-pong-server:85e47e08-clean
         command:
           - /ping-pong-server
         args:
