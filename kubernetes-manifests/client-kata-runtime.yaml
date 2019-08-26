@@ -1,35 +1,39 @@
-apiVersion: v1
-kind: Pod
+apiVersion: batch/v1
+kind: Job
 metadata:
-  name: ping-pong-kata-client
-  labels:
-    name: ping-pong-kata
+  name: ping-pong-kata-job
 spec:
-  runtimeClassName: kata-runtime
-  affinity:
-    podAntiAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchExpressions:
-                - key: name
-                  operator: In
-                  values:
-                    - ping-pong-kata
-            topologyKey: kubernetes.io/hostname
-  restartPolicy: OnFailure
-  containers:
-  - name: ping-pong-kata-client
-    image: docker.io/sdeoras/ping-pong-client:85e47e08-clean
-    imagePullPolicy: IfNotPresent
-    command:
-      - /ping-pong-client
-    args:
-      - run
-      - --host
-      - ping-pong-kata-server-service
-      - --port
-      - "5001"
-    resources:
-      limits:
-        memory: "128Mi"
-        cpu: "500m"
+  template:
+    metadata:
+      name: ping-pong-kata-client
+      labels:
+        name: ping-pong-kata
+    spec:
+      runtimeClassName: kata-runtime
+      affinity:
+        podAntiAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              - labelSelector:
+                  matchExpressions:
+                    - key: name
+                      operator: In
+                      values:
+                        - ping-pong-kata
+                topologyKey: kubernetes.io/hostname
+      restartPolicy: OnFailure
+      containers:
+      - name: ping-pong-kata-client
+        image: docker.io/sdeoras/ping-pong-client:85e47e08-clean
+        imagePullPolicy: IfNotPresent
+        command:
+          - /ping-pong-client
+        args:
+          - run
+          - --host
+          - ping-pong-kata-server-service
+          - --port
+          - "5001"
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
